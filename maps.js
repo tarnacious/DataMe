@@ -45,7 +45,6 @@ function initialize() {
     };
     map = new google.maps.Map(document.getElementById('map-canvas'),
             mapOptions);
-    console.log("Create map");
 
     data.forEach(function(point) {
         $("#data").append($("<div />").html(point.source));
@@ -92,7 +91,6 @@ function initialize() {
             });
             marker.setMap(map);
         };
-        console.log('adding marker' + latlng)
     });
 
     var lineSymbol = {
@@ -120,6 +118,32 @@ function initialize() {
         repeat: '20px'
         }],
         map: map
+    });
+
+    $("#action").click(function() {
+        from = new google.maps.LatLng(-34.397, 150.644);
+        to = new google.maps.LatLng(40, -5);
+        steps = 200;
+        step_lat = (from.lat() - to.lat()) / steps;
+        step_lng = (from.lng() - to.lng()) / steps;
+        current = from;
+
+        var move = new google.maps.Marker({
+            position: current,
+            title:"Hello World!"
+        });
+        move.setMap(map);
+
+        (function animloop(time){
+          if (steps > 0) {  
+              window.requestAnimationFrame(animloop);
+          };
+          steps -= 1;
+          var lat = current.lat() - step_lat;
+          var lng = current.lng() - step_lng;
+          current = new google.maps.LatLng(lat, lng);
+          move.setPosition(current);
+        })();
     });
 }
 
