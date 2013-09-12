@@ -51,7 +51,7 @@ function initialize() {
         $("#data").append($("<div />").html(point.source));
     });
 
-    var image = {
+    var twitter_image = {
         url: 'images/twitter.png',
         // This marker is 20 pixels wide by 32 pixels tall.
         size: new google.maps.Size(50, 50),
@@ -61,15 +61,37 @@ function initialize() {
         anchor: new google.maps.Point(0, 32)
     };
 
+    var wikipedia_image = {
+        url: 'images/wikipedia.png',
+        // This marker is 20 pixels wide by 32 pixels tall.
+        size: new google.maps.Size(50, 50),
+        // The origin for this image is 0,0.
+        origin: new google.maps.Point(0,0),
+        // The anchor for this image is the base of the flagpole at 0,32.
+        anchor: new google.maps.Point(0, 32)
+    };
+
     data.forEach(function(point) {
+
         var latlng = new google.maps.LatLng(point.geolocation.lat,
             point.geolocation.long);
-        var marker = new google.maps.Marker({
-            icon: image,
-            position: latlng,
-            title:"Hello World!"
-        });
-        marker.setMap(map);
+
+        if (point.source == 'twitter') {
+            var marker = new google.maps.Marker({
+                icon: twitter_image,
+                position: latlng,
+                title:"Hello World!"
+            });
+            marker.setMap(map);
+        };
+        if (point.source == 'wikipedia') {
+            var marker = new google.maps.Marker({
+                icon: wikipedia_image,
+                position: latlng,
+                title:"Hello World!"
+            });
+            marker.setMap(map);
+        };
         console.log('adding marker' + latlng)
     });
 
