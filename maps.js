@@ -30,8 +30,8 @@ var data = [{
     },
     "source": "wikipedia",
     "data": {
-        "imageUrl": "http://swfsdfsd.jpg",
-        "userimage": "sdsd.jpg"
+        "imageUrl": "images/kitten.jpeg",
+        "userimage": "images/kitten.jpeg"
     }
 },
     ];
@@ -47,7 +47,9 @@ function initialize() {
             mapOptions);
 
     data.forEach(function(point) {
-        $("#data").append($("<div />").html(point.source));
+        $("#data").append($("<div />").html(point.source).click(function(){
+            console.log("clicked", point);
+        }));
     });
 
     var twitter_image = {
@@ -82,6 +84,12 @@ function initialize() {
                 title:"Hello World!"
             });
             marker.setMap(map);
+            var infowindow = new google.maps.InfoWindow({
+                content: point.data.text
+            });
+            google.maps.event.addListener(marker, 'click', function() {
+              infowindow.open(map,marker);
+            });
         };
         if (point.source == 'wikipedia') {
             var marker = new google.maps.Marker({
@@ -90,6 +98,12 @@ function initialize() {
                 title:"Hello World!"
             });
             marker.setMap(map);
+            var infowindow = new google.maps.InfoWindow({
+                content: '<img src="' + point.data.imageUrl + '" />'
+            });
+            google.maps.event.addListener(marker, 'click', function() {
+              infowindow.open(map,marker);
+            });
         };
     });
 
