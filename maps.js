@@ -83,6 +83,12 @@ function initialize() {
         return new google.maps.LatLng(point.geolocation.lat, point.geolocation.long);
     });
 
+    var bounds = new google.maps.LatLngBounds();
+    lineCoordinates.forEach(function(point) {
+        bounds.extend(point);
+    });
+    map.fitBounds(bounds);
+    
     var line = new google.maps.Polyline({
         path: lineCoordinates,
         strokeOpacity: 0,
