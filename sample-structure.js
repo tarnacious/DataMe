@@ -7,7 +7,10 @@
 	"source": "twitter",
 	"data": {
 			"text": "swfsdfsd",
-			"userimage": "http://swfsdfsd.jpg"
+			"userimage": "https://si0.twimg.com/profile_images/1282416147/org_pushthings4ward_bigger.png"
+			"expanded_url": "http://selnd.com/gIsgGb"
+			"user_name": "Cosmin"
+			"user_handle": "@pushthings4ward" 
 	}		
 },
 {
