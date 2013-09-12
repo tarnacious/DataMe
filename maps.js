@@ -23,6 +23,18 @@ var data = [{
     }
 },
 {
+    "timestamp": "2013-07-09T13:05:05Z",
+    "geolocation": {
+        "lat":10.000,
+        "long":-50 
+    },
+    "source": "flickr",
+    "data": {
+        "imageUrl": "http://swfsdfsd.jpg",
+        "userimage": "sdsd.jpg"
+    }
+},
+{
     "timestamp": "2013-07-09T13:10:05Z",
     "geolocation": {
         "lat":51.000,
@@ -52,6 +64,11 @@ function initialize() {
         }));
     });
 
+    var marker = new google.maps.Marker({
+        title:"Hello World!"
+    });
+
+    marker.setMap(map);
     var twitter_image = {
         url: 'images/twitter.png',
         // This marker is 20 pixels wide by 32 pixels tall.
@@ -135,32 +152,46 @@ function initialize() {
     });
 
     $("#action").click(function() {
-        from = new google.maps.LatLng(-34.397, 150.644);
-        to = new google.maps.LatLng(40, -5);
-        steps = 200;
-        step_lat = (from.lat() - to.lat()) / steps;
-        step_lng = (from.lng() - to.lng()) / steps;
-        current = from;
-
-        var move = new google.maps.Marker({
-            position: current,
-            title:"Hello World!"
+        animate(lineCoordinates[0], lineCoordinates[1], marker, function() {
+            alert("DONE");
         });
-        move.setMap(map);
+    });
 
-        (function animloop(time){
-          if (steps > 0) {  
-              window.requestAnimationFrame(animloop);
-          };
-          steps -= 1;
-          var lat = current.lat() - step_lat;
-          var lng = current.lng() - step_lng;
-          current = new google.maps.LatLng(lat, lng);
-          move.setPosition(current);
-        })();
+    $("#action2").click(function() {
+        function animate_all(coordinates, complete) {
+            if (coordinates.length == 1) {
+            };
+            animate(coordinates[0], coordinates[1], marker, function() {
+                animate_all(coordinates.slice(1), complete);
+            });
+        };
+        animate_all(lineCoordinates, function() {
+            alert("ALL DONE");
+        })
     });
 }
 
+animate = function(start, finish, marker, complete) {
+    var steps = 200;
+    var step_lat = (start.lat() - finish.lat()) / steps;
+    var step_lng = (start.lng() - finish.lng()) / steps;
+    var current = start;
+
+
+    (function animloop(time){
+      if (steps > 0) {  
+          window.requestAnimationFrame(animloop);
+      } else {
+          complete();
+          return;
+      };
+      steps -= 1;
+      var lat = current.lat() - step_lat;
+      var lng = current.lng() - step_lng;
+      current = new google.maps.LatLng(lat, lng);
+      marker.setPosition(current);
+    })();
+}
 
 $(function() {
     google.maps.event.addDomListener(window, 'load', initialize);
