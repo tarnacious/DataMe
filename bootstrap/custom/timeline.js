@@ -75,7 +75,7 @@ drawTimeline = function(width, data, timeRange, holder, color) {
         var size = Math.max(minCircleSize, data[i].tweet_count / (requiredBuckets / availBuckets));
         var circle = r.circle(xPos, height / 2, size).attr({
             "fill": color,
-            "fill-opacity": 0.7,
+            "fill-opacity": 0.9,
             "stroke": color,
             "stroke-width": 2
         });
