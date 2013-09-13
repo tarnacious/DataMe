@@ -3,7 +3,7 @@ body {
   /*background-color:#2b3f0a;*/
 }
 
-#map {
+#map_canvas {
     height: 500px;
     width: 100%;
 
