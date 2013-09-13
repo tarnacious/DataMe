@@ -27,3 +27,60 @@ h1 {
 	padding-bottom:10px;
 
 }
+
+.tw {
+    margin-bottom: 2em;
+}
+
+.tw .name {
+    width: 8em;
+    height: 125px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    background-color: #4099FF;
+    color: white;
+    float: left;
+    padding: 0.5em;
+    /*margin-right: 1em;*/
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.fb {
+    margin-bottom: 2em;
+}
+
+.fb .name {
+    width: 8em;
+    height: 125px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    background-color: #3B5998;
+    color: white;
+    float: left;
+    padding: 0.5em;
+    /*margin-right: 1em;*/
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.gp {
+
+}
+
+.gp .name {
+    width: 8em;
+    height: 125px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    background-color: #D34836;
+    color: white;
+    float: left;
+    padding: 0.5em;
+    /*margin-right: 1em;*/
+    text-transform: uppercase;
+    font-weight: bold;
+}
