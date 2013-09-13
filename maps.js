@@ -1,8 +1,8 @@
 var map;
 function initialize() {
     var mapOptions = {
-        zoom: 8,
-        center: new google.maps.LatLng(-34.397, 150.644),
+        zoom: 3,
+        center: new google.maps.LatLng(48, 10),
         mapTypeId: google.maps.MapTypeId.ROADMAP
     };
 
@@ -42,57 +42,62 @@ function initialize() {
             anchor: new google.maps.Point(0, 32)
         };
 
-        data.forEach(function(point) {
+        function add_tweets() {
+            data.forEach(function(point) {
 
-            var latlng = new google.maps.LatLng(point.geoLocation.lat,
-                point.geoLocation.lon);
+                var latlng = new google.maps.LatLng(point.geoLocation.lat,
+                    point.geoLocation.lon);
 
-            if (point.source == 'twitter') {
-                var marker = new google.maps.Marker({
-                    icon: twitter_image,
-                    position: latlng,
-                    title:"Hello World!"
-                });
-                marker.setMap(map);
-                var infowindow = new google.maps.InfoWindow({
-                    content: point.data.text
-                });
-                google.maps.event.addListener(marker, 'click', function() {
-                  infowindow.open(map,marker);
-                });
-            };
-            if (point.source == 'wikipedia') {
-                var marker = new google.maps.Marker({
-                    icon: wikipedia_image,
-                    position: latlng,
-                    title:"Hello World!"
-                });
-                marker.setMap(map);
-                var infowindow = new google.maps.InfoWindow({
-                    content: '<img src="' + point.data.imageUrl + '" />'
-                });
-                google.maps.event.addListener(marker, 'click', function() {
-                  infowindow.open(map,marker);
-                });
-            };
-        });
-
-        var lineSymbol = {
-            path: 'M 0,-1 0,1',
-            strokeOpacity: 1,
-            scale: 2
+                if (point.source == 'twitter') {
+                    var marker = new google.maps.Marker({
+                        icon: twitter_image,
+                        position: latlng,
+                        title:"Hello World!"
+                    });
+                    marker.setMap(map);
+                    var infowindow = new google.maps.InfoWindow({
+                        content: point.data.text
+                    });
+                    google.maps.event.addListener(marker, 'click', function() {
+                      infowindow.open(map,marker);
+                    });
+                };
+                if (point.source == 'wikipedia') {
+                    var marker = new google.maps.Marker({
+                        icon: wikipedia_image,
+                        position: latlng,
+                        title:"Hello World!"
+                    });
+                    marker.setMap(map);
+                    var infowindow = new google.maps.InfoWindow({
+                        content: '<img src="' + point.data.imageUrl + '" />'
+                    });
+                    google.maps.event.addListener(marker, 'click', function() {
+                      infowindow.open(map,marker);
+                    });
+                };
+            });
         };
 
         var lineCoordinates = data.map(function(point) { 
             return new google.maps.LatLng(point.geoLocation.lat, point.geoLocation.lon);
         });
 
+        /*
         var bounds = new google.maps.LatLngBounds();
         lineCoordinates.forEach(function(point) {
-            //bounds.extend(point);
+            bounds.extend(point);
         });
-        //map.fitBounds(bounds);
+        map.fitBounds(bounds);
+        */
     
+        /*
+        var lineSymbol = {
+            path: 'M 0,-1 0,1',
+            strokeOpacity: 1,
+            scale: 2
+        };
+
         var line = new google.maps.Polyline({
             path: lineCoordinates,
             strokeOpacity: 0,
@@ -103,6 +108,7 @@ function initialize() {
             }],
             map: map
         });
+        */
 
         $("#action").click(function() {
             animate(lineCoordinates[0], lineCoordinates[1], marker, function() {
@@ -116,9 +122,19 @@ function initialize() {
                     complete();
                     return;
                 };
-
-                var bounds = new google.maps.LatLngBounds(coordinates[0], coordinates[1]);
-                map.fitBounds(bounds);
+                console.log(coordinates[0].lat() - coordinates[1].lat(), coordinates[0].lng() - coordinates[1].lng()); 
+                if ((Math.abs(coordinates[0].lat() == coordinates[1].lat()) > 0.01)  && 
+                    (Math.abs(coordinates[0].lng() == coordinates[1].lng()) > 0.01)) {
+                    console.log("GOOD");
+                    //var bounds = new google.maps.LatLngBounds(coordinates[0], coordinates[1]);
+                    //map.fitBounds(bounds);
+                    map.setCenter(coordinates[0]);
+                    map.setZoom(12);
+                } else {
+                    map.setCenter(coordinates[0]);
+                    map.setZoom(12);
+                    console.log("SKIPPING");
+                }
 
                 animate(coordinates[0], coordinates[1], marker, function() {
                     animate_all(coordinates.slice(1), complete);
@@ -132,7 +148,7 @@ function initialize() {
 }
 
 animate = function(start, finish, marker, complete) {
-    var steps = 200;
+    var steps = 80;
     var step_lat = (start.lat() - finish.lat()) / steps;
     var step_lng = (start.lng() - finish.lng()) / steps;
     var current = start;
