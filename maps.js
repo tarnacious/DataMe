@@ -1,4 +1,84 @@
 var map;
+var twitter_image = {
+    url: 'images/twitter.png',
+    // This marker is 20 pixels wide by 32 pixels tall.
+    size: new google.maps.Size(50, 50),
+    // The origin for this image is 0,0.
+    origin: new google.maps.Point(0,0),
+    // The anchor for this image is the base of the flagpole at 0,32.
+    anchor: new google.maps.Point(0, 32)
+};
+
+var wikipedia_image = {
+    url: 'images/wikipedia.png',
+    // This marker is 20 pixels wide by 32 pixels tall.
+    size: new google.maps.Size(50, 50),
+    // The origin for this image is 0,0.
+    origin: new google.maps.Point(0,0),
+    // The anchor for this image is the base of the flagpole at 0,32.
+    anchor: new google.maps.Point(0, 32)
+};
+
+function add_tweets(data) {
+    data.forEach(function(point) {
+
+        var latlng = new google.maps.LatLng(point.geoLocation.lat,
+            point.geoLocation.lon);
+
+        if (point.source == 'twitter') {
+            var marker = new google.maps.Marker({
+                icon: twitter_image,
+                position: latlng,
+                title:"Hello World!"
+            });
+            marker.setMap(map);
+            var infowindow = new google.maps.InfoWindow({
+                content: point.data.text
+            });
+            google.maps.event.addListener(marker, 'click', function() {
+              infowindow.open(map,marker);
+            });
+        };
+        if (point.source == 'wikipedia') {
+            var marker = new google.maps.Marker({
+                icon: wikipedia_image,
+                position: latlng,
+                title:"Hello World!"
+            });
+            marker.setMap(map);
+            var infowindow = new google.maps.InfoWindow({
+                content: '<img src="' + point.data.imageUrl + '" />'
+            });
+            google.maps.event.addListener(marker, 'click', function() {
+              infowindow.open(map,marker);
+            });
+        };
+    });
+};
+
+function add_lines(data) {
+    var lineCoordinates = data.map(function(point) { 
+        return new google.maps.LatLng(point.geoLocation.lat, point.geoLocation.lon);
+    });
+
+    var lineSymbol = {
+        path: 'M 0,-1 0,1',
+        strokeOpacity: 1,
+        scale: 2
+    };
+
+    var line = new google.maps.Polyline({
+        path: lineCoordinates,
+        strokeOpacity: 0,
+        icons: [{
+            icon: lineSymbol,
+        offset: '0',
+        repeat: '20px'
+        }],
+        map: map
+    });
+};
+
 function initialize() {
     var mapOptions = {
         zoom: 3,
@@ -11,73 +91,10 @@ function initialize() {
 
     $.get('timeline.json', function(data) {
 
-        data.forEach(function(point) {
-            $("#data").append($("<div />").html(point.source).click(function(){
-                console.log("clicked", point);
-            }));
-        });
-
         var marker = new google.maps.Marker({
             title:"Hello World!"
         });
-
         marker.setMap(map);
-        var twitter_image = {
-            url: 'images/twitter.png',
-            // This marker is 20 pixels wide by 32 pixels tall.
-            size: new google.maps.Size(50, 50),
-            // The origin for this image is 0,0.
-            origin: new google.maps.Point(0,0),
-            // The anchor for this image is the base of the flagpole at 0,32.
-            anchor: new google.maps.Point(0, 32)
-        };
-
-        var wikipedia_image = {
-            url: 'images/wikipedia.png',
-            // This marker is 20 pixels wide by 32 pixels tall.
-            size: new google.maps.Size(50, 50),
-            // The origin for this image is 0,0.
-            origin: new google.maps.Point(0,0),
-            // The anchor for this image is the base of the flagpole at 0,32.
-            anchor: new google.maps.Point(0, 32)
-        };
-
-        function add_tweets() {
-            data.forEach(function(point) {
-
-                var latlng = new google.maps.LatLng(point.geoLocation.lat,
-                    point.geoLocation.lon);
-
-                if (point.source == 'twitter') {
-                    var marker = new google.maps.Marker({
-                        icon: twitter_image,
-                        position: latlng,
-                        title:"Hello World!"
-                    });
-                    marker.setMap(map);
-                    var infowindow = new google.maps.InfoWindow({
-                        content: point.data.text
-                    });
-                    google.maps.event.addListener(marker, 'click', function() {
-                      infowindow.open(map,marker);
-                    });
-                };
-                if (point.source == 'wikipedia') {
-                    var marker = new google.maps.Marker({
-                        icon: wikipedia_image,
-                        position: latlng,
-                        title:"Hello World!"
-                    });
-                    marker.setMap(map);
-                    var infowindow = new google.maps.InfoWindow({
-                        content: '<img src="' + point.data.imageUrl + '" />'
-                    });
-                    google.maps.event.addListener(marker, 'click', function() {
-                      infowindow.open(map,marker);
-                    });
-                };
-            });
-        };
 
         var lineCoordinates = data.map(function(point) { 
             return new google.maps.LatLng(point.geoLocation.lat, point.geoLocation.lon);
@@ -90,25 +107,14 @@ function initialize() {
         });
         map.fitBounds(bounds);
         */
-    
-        /*
-        var lineSymbol = {
-            path: 'M 0,-1 0,1',
-            strokeOpacity: 1,
-            scale: 2
-        };
 
-        var line = new google.maps.Polyline({
-            path: lineCoordinates,
-            strokeOpacity: 0,
-            icons: [{
-                icon: lineSymbol,
-            offset: '0',
-            repeat: '20px'
-            }],
-            map: map
+        $("#tweets").click(function() {
+            add_tweets(data);
         });
-        */
+
+        $("#track").click(function() {
+            add_lines(data);
+        });
 
         $("#action").click(function() {
             animate(lineCoordinates[0], lineCoordinates[1], marker, function() {
