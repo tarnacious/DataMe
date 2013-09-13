@@ -91,6 +91,10 @@ function initialize() {
 
     $.get('timeline.json', function(data) {
 
+        console.log(data[0])
+        console.log(data[0].timestamp)
+        console.log(data[data.length - 1].timestamp)
+
         var marker = new google.maps.Marker({
             title:"Hello World!"
         });
@@ -117,9 +121,28 @@ function initialize() {
         });
 
         $("#action").click(function() {
-            animate(lineCoordinates[0], lineCoordinates[1], marker, function() {
-                alert("DONE");
-            });
+            start = parseInt(data[0].timestamp, 10);
+            (function animloop(time){
+              window.requestAnimationFrame(animloop);
+              start = start + 100;
+              index = find_index(start, data);
+
+              time_traveled = parseInt(data[index-1].timestamp, 10) - start;
+              time_delta = parseInt(data[index-1].timestamp, 10) - parseInt(data[index].timestamp, 10);
+              lat_delta = data[index-1].geoLocation.lat - data[index].geoLocation.lat;
+              lon_delta = data[index-1].geoLocation.lon - data[index].geoLocation.lon;
+
+              percent_traveled = (time_traveled / time_delta) 
+
+              lat = data[index-1].geoLocation.lat + (lat_delta * percent_traveled) 
+              lon = data[index-1].geoLocation.lon + (lon_delta * percent_traveled) 
+
+
+              point = new google.maps.LatLng(lat, lon);
+              $("#debug").html(index + ": " + start + "(" + percent_traveled + ")  " + point );
+              marker.setPosition(point);
+              map.setCenter(point);
+            })();
         });
 
         $("#action2").click(function() {
@@ -151,6 +174,21 @@ function initialize() {
             })
         });
     });
+}
+
+function find_index(time, data) {
+    var i;
+    for(i = 0; i < data.length; i++) {
+        if (parseInt(data[i].timestamp, 10) > time) {
+            return i;
+        }
+    }
+    return data.length-1;
+}
+
+function go_to_time(time, data) {
+    index = find_index(time, data)
+    return data[index];
 }
 
 animate = function(start, finish, marker, complete) {
