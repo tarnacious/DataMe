@@ -161,84 +161,6 @@ function initialize() {
           map.setCenter(point);
         })();
     });
-
-// function initialize() {
-//     var mapOptions = {
-//         zoom: 3,
-//         center: new google.maps.LatLng(48, 10),
-//         mapTypeId: google.maps.MapTypeId.ROADMAP
-//     };
-
-//     map = new google.maps.Map(document.getElementById('map_canvas'),
-//             mapOptions);
-
-
-//     $.get('../timeline.json', function(data) {
-
-//         start = new google.maps.LatLng(data[0].geoLocation.lat, data[0].geoLocation.lon);
-//         var marker = new google.maps.Marker({
-//             icon: cosmin_image,
-//             position: start
-//         });
-//         marker.setMap(map);
-
-//         var lineCoordinates = data.map(function(point) {
-//             return new google.maps.LatLng(point.geoLocation.lat, point.geoLocation.lon);
-//         });
-
-//         /*
-//         var bounds = new google.maps.LatLngBounds();
-//         lineCoordinates.forEach(function(point) {
-//             bounds.extend(point);
-//         });
-//         map.fitBounds(bounds);
-//         */
-
-//         $("#tweets").click(function() {
-//             add_tweets(data);
-//         });
-
-//         $("#track").click(function() {
-//             add_lines(data);
-//         });
-
-//         $("#stop").click(function() {
-//             animating = false;
-//         });
-            
-
-//         $("#play").click(function() {
-//             if (animating == true) {
-//                 return;
-//             };
-//             animating = true;
-//             start = parseInt(data[0].timestamp, 10);
-//             (function animloop(time){
-//               if (animating == true) {  
-//                   window.requestAnimationFrame(animloop);
-//               }
-//               start = start + 100;
-//               index = find_index(start, data);
-
-//               time_traveled = parseInt(data[index-1].timestamp, 10) - start;
-//               time_delta = parseInt(data[index-1].timestamp, 10) - parseInt(data[index].timestamp, 10);
-//               lat_delta = data[index-1].geoLocation.lat - data[index].geoLocation.lat;
-//               lon_delta = data[index-1].geoLocation.lon - data[index].geoLocation.lon;
-
-//               percent_traveled = (time_traveled / time_delta) 
-
-//               lat = data[index-1].geoLocation.lat + (lat_delta * percent_traveled) 
-//               lon = data[index-1].geoLocation.lon + (lon_delta * percent_traveled) 
-
-
-//               point = new google.maps.LatLng(lat, lon);
-//               $("#debug").html(index + ": " + start + "(" + percent_traveled + ")  " + point );
-//               marker.setPosition(point);
-//               map.setCenter(point);
-//             })();
-//         });
-
-//     });
 }
 
 function find_index(time, data) {
@@ -252,11 +174,11 @@ function find_index(time, data) {
 }
 
 function go_to_time(time, data) {
-    index = find_index(time, data)
+    index = find_index(time, data);
     return data[index];
 }
 
 
 $(function() {
     google.maps.event.addDomListener(window, 'load', initialize);
-})
+});

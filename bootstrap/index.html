@@ -44,23 +44,27 @@
 			      
 			<div id="map" class="col-md-12">
 				<div class="img-thumbnail col-md-12">
-                    <div id="map_canvas" />			
+                    <div id="map_canvas">
+					</div>
 				</div>
 			</div>
 		</div>
 		
-		<div style="margin-top:20px" class="row">
-			<div  class="col-md-12">
-				<div id="slider"></div>
-			</div>
+		<div class="row">
+			<div style="margin-top:20px">
+				<div  class="col-md-12">
+					<div id="slider"></div>
+				</div>
+			</div>	
 		</div>	
         
 		<div style="margin-top:20px" class="row">
 			<div  class="col-md-12">
-                  <button id="play">Play</button>
-                  <button id="stop">Stop</button>
-                  <button id="tweets">Show Tweets</button>
-                  <button id="track">Show Track</button>
+				  <button id="play" type="button" class="btn btn-default"><span class="glyphicon glyphicon-play"></span></button>
+				  <button id="stop" type="button" class="btn btn-default"><span class="glyphicon glyphicon-pause"></span></button>
+				  <button id="tweets" type="button" class="btn btn-default"><span><img height="15px" width="15px" src="custom/twitter_bird.png"></span></button>
+				  <button id="track" type="button" class="btn btn-default"><span class="glyphicon glyphicon-map-marker "></span></button>  
+                  Current Time: <span id="current_time" />
 			</div>
 		</div>
 
