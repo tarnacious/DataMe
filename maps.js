@@ -19,6 +19,16 @@ var wikipedia_image = {
     anchor: new google.maps.Point(0, 32)
 };
 
+var cosmin_image = {
+    url: 'images/cosmin.png',
+    // This marker is 20 pixels wide by 32 pixels tall.
+    size: new google.maps.Size(50, 50),
+    // The origin for this image is 0,0.
+    origin: new google.maps.Point(0,0),
+    // The anchor for this image is the base of the flagpole at 0,32.
+    anchor: new google.maps.Point(0, 32)
+};
+
 function add_tweets(data) {
     data.forEach(function(point) {
 
@@ -96,7 +106,7 @@ function initialize() {
         console.log(data[data.length - 1].timestamp)
 
         var marker = new google.maps.Marker({
-            title:"Hello World!"
+            icon: cosmin_image,
         });
         marker.setMap(map);
 
