@@ -139,6 +139,7 @@ function initialize() {
         
 
     $("#play").click(function() {
+        map.setZoom(12);
         if (animating === true) {
             return;
         }
@@ -167,7 +168,7 @@ function find_index(time, data) {
 
 function go_to_time(time) {
       current_time = time
-      index = find_index(start, data);
+      index = find_index(current_time, data);
 
       var d = new Date(0); 
       d.setUTCSeconds(current_time);
