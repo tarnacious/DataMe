@@ -104,10 +104,12 @@ $(function () {
             line = r.path( "M" + x + ",0 L" + x + "," + x);
             line.attr ("opacity", 0.5);
         },
-        change: function (e) {
+        change: function (e, ui) {
             if (line) {
                 line.remove();
             }
+
+            window.go_to_time(ui.value, window.timeline);
         },
         min: timeRange.min,
         max: timeRange.max,
