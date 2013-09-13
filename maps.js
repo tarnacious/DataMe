@@ -1,4 +1,6 @@
-var map;
+var map, current_time;
+var animating = false;
+
 var twitter_image = {
     url: '../images/twitter.png',
     // This marker is 20 pixels wide by 32 pixels tall.
@@ -38,8 +40,7 @@ function add_tweets(data) {
         if (point.source == 'twitter') {
             var marker = new google.maps.Marker({
                 icon: twitter_image,
-                position: latlng,
-                title:"Hello World!"
+                position: latlng
             });
             marker.setMap(map);
             var infowindow = new google.maps.InfoWindow({
@@ -52,8 +53,7 @@ function add_tweets(data) {
         if (point.source == 'wikipedia') {
             var marker = new google.maps.Marker({
                 icon: wikipedia_image,
-                position: latlng,
-                title:"Hello World!"
+                position: latlng
             });
             marker.setMap(map);
             var infowindow = new google.maps.InfoWindow({
@@ -101,10 +101,15 @@ function initialize() {
 
     $.get('../timeline.json', function(data) {
 
-        start = new google.maps.LatLng(data[0].geoLocation.lat, data[0].geoLocation.lon);
-        var marker = new google.maps.Marker({
+        window.data = data;
+        position = new google.maps.LatLng(data[0].geoLocation.lat, data[0].geoLocation.lon);
+        current_time = parseInt(data[0].timestamp)
+        var d = new Date(0); 
+        d.setUTCSeconds(current_time);
+        $("#current_time").html(d);
+        marker = new google.maps.Marker({
             icon: cosmin_image,
-            position: start
+            position: position
         });
         marker.setMap(map);
 
@@ -128,62 +133,52 @@ function initialize() {
             add_lines(data);
         });
 
-        $("#action").click(function() {
-            start = parseInt(data[0].timestamp, 10);
+        $("#stop").click(function() {
+            animating = false;
+        });
+            
+
+        $("#play").click(function() {
+            if (animating == true) {
+                return;
+            };
+            animating = true;
             (function animloop(time){
-              window.requestAnimationFrame(animloop);
-              start = start + 100;
-              index = find_index(start, data);
-
-              time_traveled = parseInt(data[index-1].timestamp, 10) - start;
-              time_delta = parseInt(data[index-1].timestamp, 10) - parseInt(data[index].timestamp, 10);
-              lat_delta = data[index-1].geoLocation.lat - data[index].geoLocation.lat;
-              lon_delta = data[index-1].geoLocation.lon - data[index].geoLocation.lon;
-
-              percent_traveled = (time_traveled / time_delta) 
-
-              lat = data[index-1].geoLocation.lat + (lat_delta * percent_traveled) 
-              lon = data[index-1].geoLocation.lon + (lon_delta * percent_traveled) 
-
-
-              point = new google.maps.LatLng(lat, lon);
-              $("#debug").html(index + ": " + start + "(" + percent_traveled + ")  " + point );
-              marker.setPosition(point);
-              map.setCenter(point);
+              if (animating == true) {  
+                  window.requestAnimationFrame(animloop);
+              }
+              move_to_time();
             })();
         });
 
-        $("#action2").click(function() {
-            function animate_all(coordinates, complete) {
-                if (coordinates.length == 1) {
-                    complete();
-                    return;
-                };
-                console.log(coordinates[0].lat() - coordinates[1].lat(), coordinates[0].lng() - coordinates[1].lng()); 
-                if ((Math.abs(coordinates[0].lat() == coordinates[1].lat()) > 0.01)  && 
-                    (Math.abs(coordinates[0].lng() == coordinates[1].lng()) > 0.01)) {
-                    console.log("GOOD");
-                    //var bounds = new google.maps.LatLngBounds(coordinates[0], coordinates[1]);
-                    //map.fitBounds(bounds);
-                    map.setCenter(coordinates[0]);
-                    map.setZoom(12);
-                } else {
-                    map.setCenter(coordinates[0]);
-                    map.setZoom(12);
-                    console.log("SKIPPING");
-                }
-
-                animate(coordinates[0], coordinates[1], marker, function() {
-                    animate_all(coordinates.slice(1), complete);
-                });
-            };
-            animate_all(lineCoordinates, function() {
-                alert("ALL DONE");
-            })
-        });
     });
 }
 
+  function move_to_time(time) {
+      current_time = current_time + 100;
+
+      var d = new Date(0); // The 0 there is the key, which sets the date to the epoch
+      d.setUTCSeconds(current_time);
+      $("#current_time").html(d);
+      index = find_index(current_time, data);
+
+      time_traveled = parseInt(data[index-1].timestamp, 10) - current_time;
+      time_delta = parseInt(data[index-1].timestamp, 10) - parseInt(data[index].timestamp, 10);
+      lat_delta = data[index-1].geoLocation.lat - data[index].geoLocation.lat;
+      lon_delta = data[index-1].geoLocation.lon - data[index].geoLocation.lon;
+
+      percent_traveled = (time_traveled / time_delta) 
+
+      lat = data[index-1].geoLocation.lat + (lat_delta * percent_traveled) 
+      lon = data[index-1].geoLocation.lon + (lon_delta * percent_traveled) 
+
+
+      point = new google.maps.LatLng(lat, lon);
+      $("#debug").html(index + ": " + current_time + "(" + percent_traveled + ")  " + point );
+      
+      marker.setPosition(point);
+      map.setCenter(point);
+  };
 function find_index(time, data) {
     var i;
     for(i = 0; i < data.length; i++) {
@@ -199,27 +194,6 @@ function go_to_time(time, data) {
     return data[index];
 }
 
-animate = function(start, finish, marker, complete) {
-    var steps = 80;
-    var step_lat = (start.lat() - finish.lat()) / steps;
-    var step_lng = (start.lng() - finish.lng()) / steps;
-    var current = start;
-
-
-    (function animloop(time){
-      if (steps > 0) {  
-          window.requestAnimationFrame(animloop);
-      } else {
-          complete();
-          return;
-      };
-      steps -= 1;
-      var lat = current.lat() - step_lat;
-      var lng = current.lng() - step_lng;
-      current = new google.maps.LatLng(lat, lng);
-      marker.setPosition(current);
-    })();
-}
 
 $(function() {
     google.maps.event.addDomListener(window, 'load', initialize);
