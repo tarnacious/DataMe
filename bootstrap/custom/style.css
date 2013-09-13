@@ -1,0 +1,23 @@
+body {
+  padding-top: 50px;
+  /*background-color:#2b3f0a;*/
+}
+.starter-template {
+  padding: 40px 15px;
+  text-align: center;
+}
+
+.jumbotron {
+	/*background-color:#F4EF90; */
+	/*background-color:#2b3f0a; */
+}
+
+h1 {
+	/*color:#F4EF90;*/
+}
+
+.img-thumbnail {
+	padding-top:15px;
+	padding-bottom:10px;
+
+}
