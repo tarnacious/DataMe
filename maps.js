@@ -1,6 +1,6 @@
 var map;
 var twitter_image = {
-    url: 'images/twitter.png',
+    url: '../images/twitter.png',
     // This marker is 20 pixels wide by 32 pixels tall.
     size: new google.maps.Size(50, 50),
     // The origin for this image is 0,0.
@@ -20,7 +20,7 @@ var wikipedia_image = {
 };
 
 var cosmin_image = {
-    url: 'images/cosmin.png',
+    url: '../images/cosmin.png',
     // This marker is 20 pixels wide by 32 pixels tall.
     size: new google.maps.Size(50, 50),
     // The origin for this image is 0,0.
@@ -96,17 +96,15 @@ function initialize() {
         mapTypeId: google.maps.MapTypeId.ROADMAP
     };
 
-    map = new google.maps.Map(document.getElementById('map-canvas'),
+    map = new google.maps.Map(document.getElementById('map'),
             mapOptions);
 
-    $.get('timeline.json', function(data) {
+    $.get('../timeline.json', function(data) {
 
-        console.log(data[0])
-        console.log(data[0].timestamp)
-        console.log(data[data.length - 1].timestamp)
-
+        start = new google.maps.LatLng(data[0].geoLocation.lat, data[0].geoLocation.lon);
         var marker = new google.maps.Marker({
             icon: cosmin_image,
+            position: start
         });
         marker.setMap(map);
 

@@ -44,9 +44,7 @@
 			      
 			<div id="map" class="col-md-12">
 				<div class="img-thumbnail col-md-12">
-
-<iframe width="100%" height="500" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=de&amp;geocode=&amp;q=bonn&amp;aq=&amp;sll=37.09024,-96.855469&amp;sspn=56.200193,82.001953&amp;ie=UTF8&amp;hq=&amp;hnear=Bonn,+K%C3%B6ln,+Nordrhein-Westfalen,+Deutschland&amp;t=m&amp;z=11&amp;ll=50.73743,7.098207&amp;output=embed&amp;iwloc=near"></iframe>
-				
+                    <div id="map" />			
 				</div>
 			</div>
 		</div>
@@ -54,6 +52,15 @@
 		<div style="margin-top:20px" class="row">
 			<div  class="col-md-12">
 				<div id="slider"></div>
+			</div>
+		</div>	
+        
+		<div style="margin-top:20px" class="row">
+			<div  class="col-md-12">
+                  <button id="action">Do Action!</button>
+                  <button id="action2">Do More Action!</button>
+                  <button id="tweets">Show Tweets</button>
+                  <button id="track">Show Track</button>
 			</div>
 		</div>	
 		
@@ -69,5 +76,7 @@
 
   <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
   <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+  <script src="../maps.js"></script>
   </body>
 </html>
