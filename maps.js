@@ -1,5 +1,7 @@
 var map, current_time;
 var animating = false;
+var tweets = null;
+var line = null;
 
 var twitter_image = {
     url: '../images/twitter.png',
@@ -32,6 +34,7 @@ var cosmin_image = {
 };
 
 function add_tweets(data) {
+    markers = []
     data.forEach(function(point) {
 
         var latlng = new google.maps.LatLng(point.geoLocation.lat,
@@ -43,6 +46,7 @@ function add_tweets(data) {
                 position: latlng
             });
             marker.setMap(map);
+            markers.push(marker);
             var infowindow = new google.maps.InfoWindow({
                 content: point.data.text
             });
@@ -64,6 +68,7 @@ function add_tweets(data) {
             });
         };
     });
+    return markers;
 };
 
 function add_lines(data) {
@@ -87,6 +92,7 @@ function add_lines(data) {
         }],
         map: map
     });
+    return line;
 };
 
 function initialize() {
@@ -126,11 +132,23 @@ function initialize() {
     */
 
     $("#tweets").click(function() {
-        add_tweets(data);
+        if (tweets) {
+            for(tweet in tweets) {
+                tweet.setMap(null);
+            }
+            tweets = null;
+        } else {
+            tweets = add_tweets(data);
+        };
     });
 
     $("#track").click(function() {
-        add_lines(data);
+        if (line) {
+            line.setMap(null);
+           line = null;
+        } else {
+            line = add_lines(data);
+        }
     });
 
     $("#stop").click(function() {
