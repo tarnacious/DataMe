@@ -94,7 +94,7 @@ $(function () {
     r = drawTimeline(width, data, timeRange, "tw-holder", "#4099FF");
 
     var line;
-    $("#slider").slider({
+    window.timeSlider = $("#slider").slider({
         slide: function (e, ui) {
             if (line) {
                 line.remove();
@@ -109,7 +109,7 @@ $(function () {
                 line.remove();
             }
 
-            window.go_to_time(ui.value, window.timeline);
+            window.go_to_time(ui.value);
         },
         min: timeRange.min,
         max: timeRange.max,

@@ -41,10 +41,11 @@ function add_tweets(data) {
             point.geoLocation.lon);
 
         if (point.source == 'twitter') {
-            var marker = new google.maps.Marker({
+            window.marker = new google.maps.Marker({
                 icon: twitter_image,
                 position: latlng
             });
+            var marker = window.marker;
             marker.setMap(map);
             markers.push(marker);
             var infowindow = new google.maps.InfoWindow({
@@ -118,6 +119,7 @@ function initialize() {
         position: start
     });
     marker.setMap(map);
+    window.marker = marker;
 
     var lineCoordinates = data.map(function(point) {
         return new google.maps.LatLng(point.geoLocation.lat, point.geoLocation.lon);
@@ -185,9 +187,9 @@ function find_index(time, data) {
 
 
 function go_to_time(time) {
-      current_time = time
+      current_time = time;
+      var data = window.timeline;
       index = find_index(current_time, data);
-
       var d = new Date(0); 
       d.setUTCSeconds(current_time);
       $("#current_time").html(d);
@@ -202,7 +204,9 @@ function go_to_time(time) {
       lon = data[index-1].geoLocation.lon + (lon_delta * percent_traveled);
 
       point = new google.maps.LatLng(lat, lon);
-      marker.setPosition(point);
+      if (window.marker !== undefined) {
+        window.marker.setPosition(point);
+      }
       map.setCenter(point);
 }
 
