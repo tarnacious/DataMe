@@ -101,10 +101,15 @@ function initialize() {
 
     $.get('../timeline.json', function(data) {
 
-        start = new google.maps.LatLng(data[0].geoLocation.lat, data[0].geoLocation.lon);
-        var marker = new google.maps.Marker({
+        window.data = data;
+        position = new google.maps.LatLng(data[0].geoLocation.lat, data[0].geoLocation.lon);
+        current_time = parseInt(data[0].timestamp)
+        var d = new Date(0); 
+        d.setUTCSeconds(current_time);
+        $("#current_time").html(d);
+        marker = new google.maps.Marker({
             icon: cosmin_image,
-            position: start
+            position: position
         });
         marker.setMap(map);
 
@@ -138,35 +143,42 @@ function initialize() {
                 return;
             };
             animating = true;
-            start = parseInt(data[0].timestamp, 10);
             (function animloop(time){
               if (animating == true) {  
                   window.requestAnimationFrame(animloop);
               }
-              start = start + 100;
-              index = find_index(start, data);
-
-              time_traveled = parseInt(data[index-1].timestamp, 10) - start;
-              time_delta = parseInt(data[index-1].timestamp, 10) - parseInt(data[index].timestamp, 10);
-              lat_delta = data[index-1].geoLocation.lat - data[index].geoLocation.lat;
-              lon_delta = data[index-1].geoLocation.lon - data[index].geoLocation.lon;
-
-              percent_traveled = (time_traveled / time_delta) 
-
-              lat = data[index-1].geoLocation.lat + (lat_delta * percent_traveled) 
-              lon = data[index-1].geoLocation.lon + (lon_delta * percent_traveled) 
-
-
-              point = new google.maps.LatLng(lat, lon);
-              $("#debug").html(index + ": " + start + "(" + percent_traveled + ")  " + point );
-              marker.setPosition(point);
-              map.setCenter(point);
+              move_to_time();
             })();
         });
 
     });
 }
 
+  function move_to_time(time) {
+      current_time = current_time + 100;
+
+      var d = new Date(0); // The 0 there is the key, which sets the date to the epoch
+      d.setUTCSeconds(current_time);
+      $("#current_time").html(d);
+      index = find_index(current_time, data);
+
+      time_traveled = parseInt(data[index-1].timestamp, 10) - current_time;
+      time_delta = parseInt(data[index-1].timestamp, 10) - parseInt(data[index].timestamp, 10);
+      lat_delta = data[index-1].geoLocation.lat - data[index].geoLocation.lat;
+      lon_delta = data[index-1].geoLocation.lon - data[index].geoLocation.lon;
+
+      percent_traveled = (time_traveled / time_delta) 
+
+      lat = data[index-1].geoLocation.lat + (lat_delta * percent_traveled) 
+      lon = data[index-1].geoLocation.lon + (lon_delta * percent_traveled) 
+
+
+      point = new google.maps.LatLng(lat, lon);
+      $("#debug").html(index + ": " + current_time + "(" + percent_traveled + ")  " + point );
+      
+      marker.setPosition(point);
+      map.setCenter(point);
+  };
 function find_index(time, data) {
     var i;
     for(i = 0; i < data.length; i++) {
