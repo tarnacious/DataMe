@@ -60,7 +60,8 @@ computeCircleSize = function(count, minCount, maxCount, minSize, maxSize) {
 
 
 drawTimeline = function(width, data, timeRange, holder, color) {
-    var r = Raphael(holder, width, 125);
+    var height = 80;
+    var r = Raphael(holder, width, height);
     var targets = r.set();
     var countRange = computeCountRange(data);
     var minCircleSize = 3;
@@ -72,13 +73,13 @@ drawTimeline = function(width, data, timeRange, holder, color) {
     for (var i = 0; i < data.length; i++) {
         var xPos = computeX(data[i], width, timeRange);
         var size = Math.max(minCircleSize, data[i].tweet_count / (requiredBuckets / availBuckets));
-        var circle = r.circle(xPos, 75, size).attr({
+        var circle = r.circle(xPos, height / 2, size).attr({
             "fill": color,
             "fill-opacity": 0.7,
             "stroke": color,
             "stroke-width": 2
         });
-        var count = r.text(xPos, 75, data[i].tweet_count).attr({"font": '10px Helvetica, Arial', stroke: "none", fill: "#fff"});
+        var count = r.text(xPos, height / 2, data[i].tweet_count).attr({"font": '10px Helvetica, Arial', stroke: "none", fill: "#fff"});
         targets.push(circle);
     }
 

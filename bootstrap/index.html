@@ -50,36 +50,38 @@
 			</div>
 		</div>
 		
-		<div class="row">
-			<div style="margin-top:20px">
-				<div  class="col-md-12">
-					<div id="slider"></div>
+    <div style="margin-top:20px" class="row">
+      <div  class="col-md-12">
+          <button id="play" type="button" class="btn btn-default"><span class="glyphicon glyphicon-play"></span></button>
+          <button id="stop" type="button" class="btn btn-default"><span class="glyphicon glyphicon-pause"></span></button>
+          <button id="tweets" type="button" class="btn btn-default"><span><img height="15px" width="15px" src="custom/twitter_bird.png"></span></button>
+          <button id="track" type="button" class="btn btn-default"><span class="glyphicon glyphicon-map-marker "></span></button>  
+<!--                   Current Time: <span id="current_time" /> -->
+					<div id="slider" style="float: right; margin-top:10px"></div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div style="margin-top:20px">
+        <div class="col-md-12" style="width: 950px; margin: 0 auto">
 				</div>
 			</div>	
 		</div>	
-        
-		<div style="margin-top:20px" class="row">
-			<div  class="col-md-12">
-				  <button id="play" type="button" class="btn btn-default"><span class="glyphicon glyphicon-play"></span></button>
-				  <button id="stop" type="button" class="btn btn-default"><span class="glyphicon glyphicon-pause"></span></button>
-				  <button id="tweets" type="button" class="btn btn-default"><span><img height="15px" width="15px" src="custom/twitter_bird.png"></span></button>
-				  <button id="track" type="button" class="btn btn-default"><span class="glyphicon glyphicon-map-marker "></span></button>  
-                  Current Time: <span id="current_time" />
-			</div>
-		</div>
 
-    <div style="margin-top:20px" class="row">
-      <div class="tw clearfix">
-        <div class="name">Twitter</div>
-        <div id="tw-holder"></div>
-      </div>
-      <div class="fb clearfix">
-        <div class="name">Facebook</div>
-        <div id="fb-holder"></div>
-      </div>
-      <div class="gp clearfix">
-      <div class="name">Google+</div>
-        <div id="gp-holder"></div>
+    <div class="row">
+      <div style="margin-top:20px" class="col-md-12">
+        <div class="tw clearfix">
+          <div class="name">Twitter</div>
+          <div id="tw-holder"></div>
+        </div>
+        <div class="fb clearfix" class="col-md-12">
+          <div class="name">Facebook</div>
+          <div id="fb-holder"></div>
+        </div>
+        <div class="gp clearfix" class="col-md-12">
+        <div class="name">Google+</div>
+          <div id="gp-holder"></div>
+        </div>
       </div>
     </div>
 		

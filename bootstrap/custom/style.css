@@ -28,20 +28,25 @@ h1 {
 
 }
 
+#slider {
+  width: 950px !important;
+}
+
 .tw {
     margin-bottom: 2em;
 }
 
 .tw .name {
-    width: 8em;
-    height: 125px;
+    width: 12.33em;
+    line-height: 60px;
+    margin: 10px 0;
+    padding-left: 10px;
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
     border-radius: 6px;
-    background-color: #4099FF;
-    color: white;
+    background-color: rgba(64,153,255, 0.33);
+    color: #888;
     float: left;
-    padding: 0.5em;
     /*margin-right: 1em;*/
     text-transform: uppercase;
     font-weight: bold;
@@ -52,15 +57,16 @@ h1 {
 }
 
 .fb .name {
-    width: 8em;
-    height: 125px;
+    width: 12.33em;
+    line-height: 60px;
+    margin: 10px 0;
+    padding-left: 10px;
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
     border-radius: 6px;
-    background-color: #3B5998;
-    color: white;
+    background-color: rgba(59, 89, 152, 0.33);
+    color: #888;
     float: left;
-    padding: 0.5em;
     /*margin-right: 1em;*/
     text-transform: uppercase;
     font-weight: bold;
@@ -71,15 +77,16 @@ h1 {
 }
 
 .gp .name {
-    width: 8em;
-    height: 125px;
+    width: 12.33em;
+    line-height: 60px;
+    margin: 10px 0;
+    padding-left: 10px;
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
     border-radius: 6px;
-    background-color: #D34836;
-    color: white;
+    background-color: rgba(211, 72, 54, 0.33);
+    color: #888;
     float: left;
-    padding: 0.5em;
     /*margin-right: 1em;*/
     text-transform: uppercase;
     font-weight: bold;
